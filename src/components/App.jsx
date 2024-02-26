@@ -5,6 +5,7 @@ import SearchBar from './SearchBar/SearchBar'
 import Loader from './Loader/Loader.jsx'
 import ErrorMessage from './ErrorMessage/ErrorMessage.jsx'
 import LoadMoreBtn from './LoadMoreBtn/LoadMoreBtn.jsx';
+import ImageModal from './ImageModal/ImageModal.jsx';
 import './App.css'
 
 const searchParams = {
@@ -29,10 +30,10 @@ function App() {
       setError(false);
       setMoreBtn(false);
       setLoading(true);
-      console.log(searchParams);
       const res = await fetchPhotos(searchParams);
       if(res.total === 0){
         setError(true);
+        setImages([]);
       }else{
         if(searchParams.page === 1){
           setImages(res.results);
@@ -57,10 +58,11 @@ function App() {
   return (
     <>
       <SearchBar onSearch={handleSearch} />
-      {loading && <Loader />}
       {error && <ErrorMessage />}
       <ImageGallery images={images} />
+      {loading && <Loader />}
       {moreBtn && <LoadMoreBtn onLoadMore={handleSearch} query={searchParams.query} />}
+      <ImageModal />
     </>
   )
 }
