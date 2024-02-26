@@ -1,11 +1,13 @@
 import PropTypes from 'prop-types'
+import { FaSearch } from "react-icons/fa";
+import css from './SearchBar.module.css'
 
 const SearchBar = ( {onSearch} ) => {
 
 	const handleSubmit = (evt) => {
         evt.preventDefault();
         const form = evt.target;
-            const query = form.elements.query.value;
+            const query = form.elements.query.value.trim();
             if(form.elements.query.value.trim() === "") {
                 alert("Please enter search term!")
                 return;
@@ -15,16 +17,17 @@ const SearchBar = ( {onSearch} ) => {
     };
     
     return (
-        <header>
-            <form onSubmit={handleSubmit}>
+        <header className={css.header}>
+            <form className={css.searchForm} onSubmit={handleSubmit}>
                 <input
+                className={css.searchInput}
                 type="text"
                 autoComplete="off"
                 autoFocus
                 placeholder="Search images and photos"
                 name="query"
                 />
-                <button type="submit">Search</button>
+                <button className={css.searchBtn} type="submit"><FaSearch /></button>
             </form>
         </header>
     )

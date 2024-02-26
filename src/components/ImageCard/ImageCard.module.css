@@ -1,0 +1,8 @@
+.imageBlock{
+    width: 400px;
+    height: 266px;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    border: 1px solid #eee;
+}

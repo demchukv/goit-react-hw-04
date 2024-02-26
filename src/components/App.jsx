@@ -7,50 +7,45 @@ import ErrorMessage from './ErrorMessage/ErrorMessage.jsx'
 import LoadMoreBtn from './LoadMoreBtn/LoadMoreBtn.jsx';
 import './App.css'
 
+const searchParams = {
+  page: 1,
+  per_page: 10,
+  query: "",
+};
+
 function App() {
-  const per_page = 10;
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [moreBtn, setMoreBtn] = useState(false);
   const [error, setError] = useState(false);
-  const [queryVal, setQueryVal] = useState("");
-  const [searchParams, setSearchParams] = useState({
-    page: 1,
-    per_page,
-    query: "",
-  });
 
   const handleSearch = async (query) => {
-    console.log(query);
     try{
-      setSearchParams({
-        ...searchParams,
-        query,
-      });
-      setQueryVal(query);
-      setImages([]);
+      if(searchParams.query !== query){
+        searchParams.query = query;
+        searchParams.page = 1;
+        setImages([]);
+      }
       setError(false);
+      setMoreBtn(false);
       setLoading(true);
       console.log(searchParams);
-      console.log("query: " + queryVal);
       const res = await fetchPhotos(searchParams);
       if(res.total === 0){
         setError(true);
       }else{
-        setImages(res.results);
+        if(searchParams.page === 1){
+          setImages(res.results);
+        }else{
+          setImages(images.concat(res.results));
+        }
       }
       if(searchParams.page >= res.total_pages){
         setMoreBtn(false);
-        setSearchParams({
-          ...searchParams,
-          page: 1,
-        });
+        searchParams.page = 1;
       }else{
         setMoreBtn(true);
-        setSearchParams({
-          ...searchParams,
-          page: searchParams.page + 1,
-        });
+        searchParams.page = searchParams.page + 1;
       }
     }catch{
       setError(true);
@@ -59,17 +54,13 @@ function App() {
     }
   };
 
-  const handleMoreBtn = () => {
-    handleSearch(searchParams.query);
-  }
-
   return (
     <>
       <SearchBar onSearch={handleSearch} />
       {loading && <Loader />}
       {error && <ErrorMessage />}
       <ImageGallery images={images} />
-      {moreBtn && <LoadMoreBtn onClick={handleMoreBtn} />}
+      {moreBtn && <LoadMoreBtn onLoadMore={handleSearch} query={searchParams.query} />}
     </>
   )
 }

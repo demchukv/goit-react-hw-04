@@ -1,12 +1,8 @@
-import React from 'react'
-import PropTypes from 'prop-types'
 
-const ErrorMessage = props => {
+const ErrorMessage = () => {
   return (
-    <div>ErrorMessage</div>
+    <div>Error occured! Try again.</div>
   )
 }
-
-ErrorMessage.propTypes = {}
 
 export default ErrorMessage

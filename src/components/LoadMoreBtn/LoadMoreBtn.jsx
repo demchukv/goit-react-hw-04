@@ -1,10 +1,8 @@
+import css from './LoadMoreBtn.module.css'
 
-const LoadMoreBtn = ({ onClick }) => {
-  const handleClickMoreBtn = () => {
-    onClick();
-  }
+const LoadMoreBtn = ({ onLoadMore, query }) => {
   return (
-    <button type="button" onClick={handleClickMoreBtn}>Load more</button>
+    <button className={css.loadMoreBtn} type="button" onClick={() => onLoadMore(query)}>Load more</button>
   )
 }
 

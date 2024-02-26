@@ -1,0 +1,17 @@
+.loadMoreBtn{
+    display: flex;
+    align-self: center;
+    margin: 0 auto;
+    margin-bottom: 16px;
+    border: 1px solid blue;
+    background-color: #eee;
+    padding: 8px 16px;
+    outline: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: all 0.25s ease-in-out;
+}
+.loadMoreBtn:hover, .loadMoreBtn:focus, .loadMoreBtn:active{
+    background-color: blue;
+    color:#fff;
+}
