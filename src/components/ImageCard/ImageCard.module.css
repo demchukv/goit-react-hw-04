@@ -1,9 +1,15 @@
 .imageBlock{
-    width: 400px;
-    height: 266px;
+    width: 280px;
+    height: 192px;
     overflow: hidden;
     display: flex;
     align-items: center;
     border: 1px solid #eee;
     cursor: pointer;
+}
+@media screen and (min-width: 768px) {
+    .imageBlock{
+        width: 400px;
+        height: 266px;
+    }
 }

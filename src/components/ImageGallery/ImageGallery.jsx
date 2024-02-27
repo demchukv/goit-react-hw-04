@@ -3,7 +3,6 @@ import ImageCard from '../ImageCard/ImageCard'
 import css from './ImageGallery.module.css'
 
 const ImageGallery = ({ images, handleImageClick }) => {
-  
   return (
     <ul className={css.gallery}>
       {images.map((image) => {
@@ -15,7 +14,7 @@ const ImageGallery = ({ images, handleImageClick }) => {
       })
       }
     </ul>
-  )
+  );
 }
 
 ImageGallery.propTypes = {

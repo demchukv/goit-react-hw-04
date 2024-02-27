@@ -19,15 +19,15 @@ function App() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [moreBtn, setMoreBtn] = useState(false);
-  const [modalIsOpen, setIsOpen] = useState(false);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
   const [imageModalData, setImageModalData] = useState({});
 
   const openModal = () => {
-    setIsOpen(true);
+    setModalIsOpen(true);
   }
 
   const closeModal = () => {
-    setIsOpen(false);
+    setModalIsOpen(false);
   }
 
   const handleSearch = async (query) => {
@@ -62,6 +62,9 @@ function App() {
       toast.error('Error occured! Tray again later!');
     }finally{
       setLoading(false);
+      if(searchParams.page > 1){
+        window.scrollBy({top: window.innerHeight-200, left: 0, behavior: 'smooth'});
+      }
     }
   };
 
@@ -74,8 +77,8 @@ function App() {
     <>
       <SearchBar onSearch={handleSearch} />
       {images.length > 0 && <ImageGallery images={images} handleImageClick={handleImageClick} />}
-      {loading && <Loader />}
       {moreBtn && <LoadMoreBtn onLoadMore={handleSearch} query={searchParams.query} />}
+      {loading && <Loader />}
       <ImageModal closeModal={closeModal} modalIsOpen={modalIsOpen} data={imageModalData} />
       <ErrorMessage />
     </>
