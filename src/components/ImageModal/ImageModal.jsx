@@ -1,61 +1,37 @@
-import { useState } from 'react';
+import PropTypes from 'prop-types'
 import Modal from 'react-modal';
 import css from './ImageModal.module.css'
 
-const customStyles = {
-  content: {
-    top: '50%',
-    left: '50%',
-    right: 'auto',
-    bottom: 'auto',
-    marginRight: '-50%',
-    transform: 'translate(-50%, -50%)',
-  },
-};
+Modal.setAppElement('#root');
 
-const ImageModal = () => {
-
-  let subtitle;
-  const [modalIsOpen, setIsOpen] = useState(false);
-
-  function openModal() {
-    setIsOpen(true);
-  }
-
-  function afterOpenModal() {
-    // references are now sync'd and can be accessed.
-    subtitle.style.color = '#f00';
-  }
-
-  function closeModal() {
-    setIsOpen(false);
-  }
-  
-  Modal.setAppElement('#root');
+const ImageModal = ({ closeModal, modalIsOpen, data }) => {
 
   return (
-    <div>
-    <button onClick={openModal}>Open Modal</button>
     <Modal
       isOpen={modalIsOpen}
-      onAfterOpen={afterOpenModal}
       onRequestClose={closeModal}
-      style={customStyles}
-      contentLabel="Example Modal"
+      contentLabel="Image Modal"
+      className={css.Modal}
+      overlayClassName={css.Overlay}
     >
-      <h2 ref={(_subtitle) => (subtitle = _subtitle)}>Hello</h2>
-      <button onClick={closeModal}>close</button>
-      <div>I am a modal</div>
-      <form>
-        <input />
-        <button>tab navigation</button>
-        <button>stays</button>
-        <button>inside</button>
-        <button>the modal</button>
-      </form>
+      {Object.keys(data).length > 0 && 
+      (<div className={css.modalContainer}>
+        <div className={css.imageContainer}><img className={css.image} src={data.urls.regular} alt={data.alt_description} /></div>
+        <div className={css.imageDescription}>{data.description}</div>
+        <ul className={css.addImageInfo}>
+          <li>Author: {data.user.name}</li>
+          <li>Likes: {data.likes}</li>
+        </ul>
+      </div>)
+      }
     </Modal>
-  </div>
   )
+}
+
+ImageModal.propTypes = {
+  closeModal: PropTypes.func.isRequired,
+  modalIsOpen: PropTypes.bool.isRequired,
+  data: PropTypes.object,
 }
 
 export default ImageModal

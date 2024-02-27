@@ -1,0 +1,36 @@
+.Overlay{
+    position: fixed;
+    inset: 0px;
+    background-color: rgba(0, 0, 0, 0.75);
+}
+.Modal{
+    position: absolute;
+    inset: 50% auto auto 50%;
+    border: none;
+    background: transparent;
+    overflow: auto;
+    border-radius: 4px;
+    outline: none;
+    padding: 20px;
+    margin-right: -50%;
+    transform: translate(-50%, -50%);
+    max-width: 100vh;
+    max-height: 100vh;
+}
+.image{
+    max-width: 100%;
+    max-height: 80vh;
+    margin: 0 auto;
+}
+.imageDescription{
+    font-size: 16px;
+    font-weight: 600;
+    color:#fff;
+}
+.addImageInfo{
+    list-style: none;
+    padding: 0;
+    display: flex;
+    justify-content: space-between;
+    color:#fff;
+}

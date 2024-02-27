@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import toast from 'react-hot-toast';
 import { fetchPhotos } from "./api/unsplash-api.js";
 import ImageGallery from './ImageGallery/ImageGallery'
 import SearchBar from './SearchBar/SearchBar'
@@ -18,7 +19,16 @@ function App() {
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
   const [moreBtn, setMoreBtn] = useState(false);
-  const [error, setError] = useState(false);
+  const [modalIsOpen, setIsOpen] = useState(false);
+  const [imageModalData, setImageModalData] = useState({});
+
+  const openModal = () => {
+    setIsOpen(true);
+  }
+
+  const closeModal = () => {
+    setIsOpen(false);
+  }
 
   const handleSearch = async (query) => {
     try{
@@ -27,42 +37,47 @@ function App() {
         searchParams.page = 1;
         setImages([]);
       }
-      setError(false);
       setMoreBtn(false);
       setLoading(true);
-      const res = await fetchPhotos(searchParams);
+      const response = await fetchPhotos(searchParams);
+      const res = response.data;
       if(res.total === 0){
-        setError(true);
         setImages([]);
+        toast.error('Nothing found! Try a different search phrase!', {duration:2500,position: 'top-center',});
       }else{
         if(searchParams.page === 1){
           setImages(res.results);
         }else{
           setImages(images.concat(res.results));
         }
-      }
-      if(searchParams.page >= res.total_pages){
-        setMoreBtn(false);
-        searchParams.page = 1;
-      }else{
-        setMoreBtn(true);
-        searchParams.page = searchParams.page + 1;
+        if(searchParams.page >= res.total_pages){
+          setMoreBtn(false);
+          searchParams.page = 1;
+        }else{
+          setMoreBtn(true);
+          searchParams.page = searchParams.page + 1;
+        }
       }
     }catch{
-      setError(true);
+      toast.error('Error occured! Tray again later!');
     }finally{
       setLoading(false);
     }
   };
 
+  const handleImageClick = (image) => {
+    setImageModalData(image);
+    openModal();
+  }
+
   return (
     <>
       <SearchBar onSearch={handleSearch} />
-      {error && <ErrorMessage />}
-      <ImageGallery images={images} />
+      {images.length > 0 && <ImageGallery images={images} handleImageClick={handleImageClick} />}
       {loading && <Loader />}
       {moreBtn && <LoadMoreBtn onLoadMore={handleSearch} query={searchParams.query} />}
-      <ImageModal />
+      <ImageModal closeModal={closeModal} modalIsOpen={modalIsOpen} data={imageModalData} />
+      <ErrorMessage />
     </>
   )
 }

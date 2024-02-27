@@ -1,7 +1,8 @@
+import { Toaster } from 'react-hot-toast';
 
 const ErrorMessage = () => {
   return (
-    <div>Error occured! Try again.</div>
+    <Toaster />
   )
 }
 

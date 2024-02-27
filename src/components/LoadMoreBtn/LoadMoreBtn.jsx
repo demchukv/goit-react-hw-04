@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types'
 import css from './LoadMoreBtn.module.css'
 
 const LoadMoreBtn = ({ onLoadMore, query }) => {
@@ -6,4 +7,8 @@ const LoadMoreBtn = ({ onLoadMore, query }) => {
   )
 }
 
+LoadMoreBtn.propTypes = {
+  onLoadMore: PropTypes.func.isRequired,
+  query: PropTypes.string.isRequired,
+}
 export default LoadMoreBtn

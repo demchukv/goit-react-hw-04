@@ -1,9 +1,9 @@
 import PropTypes from 'prop-types'
 import css from './ImageCard.module.css'
 
-const ImageCard = ({ image }) => {
+const ImageCard = ({ image, handleImageClick }) => {
   return (
-    <div className={css.imageBlock}>
+    <div className={css.imageBlock} onClick={() => handleImageClick(image)}>
       <img src={image.urls.small} alt={image.alt_description} width="400" />
     </div>
   )
@@ -11,6 +11,7 @@ const ImageCard = ({ image }) => {
 
 ImageCard.propTypes = {
   image: PropTypes.object.isRequired,
+  handleImageClick: PropTypes.func.isRequired,
 }
 
 export default ImageCard
