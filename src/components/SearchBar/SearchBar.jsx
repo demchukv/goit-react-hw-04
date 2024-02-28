@@ -1,19 +1,18 @@
 import PropTypes from 'prop-types'
-import toast from 'react-hot-toast';
 import { FaSearch } from "react-icons/fa";
 import css from './SearchBar.module.css'
 
-const SearchBar = ( {onSearch} ) => {
+const SearchBar = ( {onSearch, notify} ) => {
 
 	const handleSubmit = (evt) => {
         evt.preventDefault();
         const form = evt.target;
-            const query = form.elements.query.value.trim();
-            if(form.elements.query.value.trim() === "") {
-                toast.error('Please enter search term!', {duration:1500,position: 'top-center',});
-                return;
-            }
-            onSearch(query);
+        const query = form.elements.query.value.trim();
+        if(query === "") {
+            notify('Please enter search term!');
+            return;
+        }
+        onSearch(query);
         form.reset();
     };
     
@@ -36,6 +35,7 @@ const SearchBar = ( {onSearch} ) => {
 
 SearchBar.propTypes = {
     onSearch: PropTypes.func.isRequired,
+    notify: PropTypes.func.isRequired,
 }
 
 export default SearchBar
