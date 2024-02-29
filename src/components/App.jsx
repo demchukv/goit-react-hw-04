@@ -1,5 +1,4 @@
 import { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 import axios from "axios";
 import { getFetchUrl } from "./api/unsplash-api.js";
 import ImageGallery from './ImageGallery/ImageGallery'
@@ -15,7 +14,8 @@ function App() {
   const [page, setPage] = useState(1);
   const [images, setImages] = useState([]);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [errorState, setErrorState] = useState(false);
+  const [errorMsg, setErrorMsg] = useState("");
   const [moreBtn, setMoreBtn] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
   const [imageModalData, setImageModalData] = useState({});
@@ -44,14 +44,15 @@ function App() {
       }
       const fetchPhotos = async () => {
         setMoreBtn(false);
-        setError(false);
+        setErrorState(false);
         setLoading(true);
         await axios.get(getFetchUrl( page, per_page, query ))
           .then((response) => {
             const res = response.data;
             if(res.total === 0){
               setImages([]);
-              notify('Nothing found! Try a different search phrase!');
+              setErrorMsg('Nothing found! Try a different search phrase!');
+              setErrorState(true);
             }else{
               setImages(prevImages => prevImages.concat(res.results));
               if(page >= res.total_pages){
@@ -62,7 +63,8 @@ function App() {
             }
           })
           .catch((error) => {
-            notify(error.response.data.errors);
+            setErrorMsg(!error.response.data.errors ? error.message : error.response.data.errors);
+            setErrorState(true);
           })
           .finally(() => {
             setLoading(false);
@@ -81,22 +83,17 @@ function App() {
   }
 
   const handleNextPage = () => {
-    setPage(page + 1);
-  }
-
-  const notify = (msg) => {
-    setError(true);
-    toast.error(msg, {duration:2500, position: 'top-right',});
+    setPage(prevPage => prevPage + 1);
   }
 
   return (
     <>
-      <SearchBar onSearch={handleNewSearch} notify={notify} />
+      <SearchBar onSearch={handleNewSearch} />
       {images.length > 0 && <ImageGallery images={images} handleImageClick={handleImageClick} />}
       {moreBtn && <LoadMoreBtn onLoadMore={handleNextPage} />}
       {loading && <Loader />}
       <ImageModal closeModal={closeModal} modalIsOpen={modalIsOpen} data={imageModalData} />
-      {error && <ErrorMessage />}
+      {errorState && <ErrorMessage message={errorMsg} />}
     </>
   )
 }

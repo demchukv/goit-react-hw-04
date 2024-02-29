@@ -1,15 +1,16 @@
+import toast, { Toaster } from 'react-hot-toast';
 import PropTypes from 'prop-types'
 import { FaSearch } from "react-icons/fa";
 import css from './SearchBar.module.css'
 
-const SearchBar = ( {onSearch, notify} ) => {
+const SearchBar = ( {onSearch} ) => {
 
 	const handleSubmit = (evt) => {
         evt.preventDefault();
         const form = evt.target;
         const query = form.elements.query.value.trim();
         if(query === "") {
-            notify('Please enter search term!');
+            toast.error('Please enter search term!', {position:'top right'});
             return;
         }
         onSearch(query);
@@ -29,13 +30,13 @@ const SearchBar = ( {onSearch, notify} ) => {
                 />
                 <button className={css.searchBtn} type="submit"><FaSearch /></button>
             </form>
+            <Toaster />
         </header>
     )
 }
 
 SearchBar.propTypes = {
     onSearch: PropTypes.func.isRequired,
-    notify: PropTypes.func.isRequired,
 }
 
 export default SearchBar
