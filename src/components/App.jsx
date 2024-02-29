@@ -18,7 +18,13 @@ function App() {
   const [errorMsg, setErrorMsg] = useState("");
   const [moreBtn, setMoreBtn] = useState(false);
   const [modalIsOpen, setModalIsOpen] = useState(false);
-  const [imageModalData, setImageModalData] = useState({});
+  const [imageModalData, setImageModalData] = useState({
+    imgSrc: "",
+    imgDescription: "",
+    imgAltDescription: "",
+    imgAuthor: "",
+    imgLikes: 0,
+  });
   const per_page = 10;
 
   const openModal = () => {
@@ -92,7 +98,7 @@ function App() {
       {images.length > 0 && <ImageGallery images={images} handleImageClick={handleImageClick} />}
       {moreBtn && <LoadMoreBtn onLoadMore={handleNextPage} />}
       {loading && <Loader />}
-      <ImageModal closeModal={closeModal} modalIsOpen={modalIsOpen} data={imageModalData} />
+      <ImageModal closeModal={closeModal} modalIsOpen={modalIsOpen} {...imageModalData} />
       {errorState && <ErrorMessage message={errorMsg} />}
     </>
   )

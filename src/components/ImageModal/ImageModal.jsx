@@ -4,7 +4,15 @@ import css from './ImageModal.module.css'
 
 Modal.setAppElement('#root');
 
-const ImageModal = ({ closeModal, modalIsOpen, data }) => {
+const ImageModal = ({ 
+  closeModal, 
+  modalIsOpen, 
+  imgSrc = "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg", 
+  imgAltDescription = "Regular gallery image", 
+  imgDescription = "Big image", 
+  imgAuthor = "Unknow", 
+  imgLikes = 0 
+}) => {
 
   return (
     <Modal
@@ -14,16 +22,14 @@ const ImageModal = ({ closeModal, modalIsOpen, data }) => {
       className={css.Modal}
       overlayClassName={css.Overlay}
     >
-      {Object.keys(data).length > 0 && 
-      (<div className={css.modalContainer}>
-        <div className={css.imageContainer}><img className={css.image} src={data.urls.regular} alt={data.alt_description} /></div>
-        <div className={css.imageDescription}>{data.description}</div>
+      <div className={css.modalContainer}>
+        <div className={css.imageContainer}><img className={css.image} src={imgSrc} alt={imgAltDescription} /></div>
+        <div className={css.imageDescription}>{imgDescription}</div>
         <ul className={css.addImageInfo}>
-          <li>Author: {data.user.name}</li>
-          <li>Likes: {data.likes}</li>
+          <li>Author: {imgAuthor}</li>
+          <li>Likes: {imgLikes}</li>
         </ul>
-      </div>)
-      }
+      </div>
     </Modal>
   )
 }
@@ -31,7 +37,12 @@ const ImageModal = ({ closeModal, modalIsOpen, data }) => {
 ImageModal.propTypes = {
   closeModal: PropTypes.func.isRequired,
   modalIsOpen: PropTypes.bool.isRequired,
-  data: PropTypes.object,
+  imgSrc: PropTypes.string.isRequired,
+  imgAltDescription: PropTypes.string.isRequired,
+  imgDescription: PropTypes.string,
+  imgAuthor: PropTypes.string,
+  imgLikes: PropTypes.number,
+  
 }
 
 export default ImageModal
